@@ -1,4 +1,11 @@
-# Pokémon Emerald
+# Pokémon Emerald with more stuff
+
+### added features:
+
+### planned features:
+- Hoenn dex completable on one cart
+- compatible with other games
+
 
 This is a decompilation of Pokémon Emerald.
 
