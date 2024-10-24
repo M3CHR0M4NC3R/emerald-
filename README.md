@@ -1,6 +1,7 @@
 # Pokémon Emerald with more stuff
 
 ### added features:
+- Version-Exclusive Pokemon added back in
 
 ### planned features:
 - Hoenn dex completable on one cart
