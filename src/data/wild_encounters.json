@@ -161,9 +161,9 @@
                 "species": "SPECIES_RALTS"
               },
               {
-                "min_level": 4,
-                "max_level": 4,
-                "species": "SPECIES_ZIGZAGOON"
+                "min_level": 3,
+                "max_level": 3,
+                "species": "SPECIES_SURSKIT"
               },
               {
                 "min_level": 3,
@@ -1188,9 +1188,9 @@
                 "species": "SPECIES_SEVIPER"
               },
               {
-                "min_level": 17,
-                "max_level": 17,
-                "species": "SPECIES_SEVIPER"
+                "min_level": 15,
+                "max_level": 15,
+                "species": "SPECIES_SURSKIT"
               },
               {
                 "min_level": 15,
