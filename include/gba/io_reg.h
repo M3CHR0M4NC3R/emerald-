@@ -713,6 +713,9 @@
 #define DPAD_ANY        ((DPAD_RIGHT | DPAD_LEFT | DPAD_UP | DPAD_DOWN))
 #define JOY_EXCL_DPAD   0x030F
 
+#define SLEEP_KEYS ((DPAD_LEFT | A_BUTTON | B_BUTTON))
+#define WAKE_KEYS ((SELECT_BUTTON | START_BUTTON))
+
 // interrupt flags
 #define INTR_FLAG_VBLANK  (1 <<  0)
 #define INTR_FLAG_HBLANK  (1 <<  1)
