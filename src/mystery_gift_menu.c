@@ -31,6 +31,7 @@
 #include "link_rfu.h"
 #include "wonder_news.h"
 #include "constants/cable_club.h"
+#include "random.h"
 
 enum {
     WIN_HEADER,
@@ -416,6 +417,7 @@ static bool32 HandleMysteryGiftOrEReaderSetup(s32 isEReader)
         SetGpuReg(REG_OFFSET_BLDCNT, 0);
         SetGpuReg(REG_OFFSET_BLDALPHA, 0);
         SetGpuReg(REG_OFFSET_BLDY, 0);
+        SeedRngIfNeeded();
         gMain.state++;
         break;
     case 1:

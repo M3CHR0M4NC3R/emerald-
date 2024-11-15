@@ -299,7 +299,6 @@ static void UNUSED LinkTestScreen(void)
     ResetBlockSend();
     gLinkType = LINKTYPE_TRADE;
     OpenLink();
-    SeedRng(gMain.vblankCounter2);
     for (i = 0; i < TRAINER_ID_LENGTH; i++)
         gSaveBlock2Ptr->playerTrainerId[i] = Random() % 256;
 
@@ -328,7 +327,9 @@ static void InitLocalLinkPlayer(void)
     gLocalLinkPlayer.gender = gSaveBlock2Ptr->playerGender;
     gLocalLinkPlayer.linkType = gLinkType;
     gLocalLinkPlayer.language = gGameLanguage;
+
     gLocalLinkPlayer.version = gGameVersion + 0x4000;
+
     gLocalLinkPlayer.lp_field_2 = 0x8000;
     gLocalLinkPlayer.progressFlags = IsNationalPokedexEnabled();
     if (FlagGet(FLAG_IS_CHAMPION))

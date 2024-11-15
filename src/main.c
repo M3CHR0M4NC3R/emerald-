@@ -96,6 +96,7 @@ void AgbMain()
     *(vu16 *)BG_PLTT = RGB_WHITE; // Set the backdrop to white on startup
     InitGpuRegManager();
     REG_WAITCNT = WAITCNT_PREFETCH_ENABLE | WAITCNT_WS0_S_1 | WAITCNT_WS0_N_3;
+    StartSeedTimer();
     InitKeys();
     InitIntrHandlers();
     m4aSoundInit();
@@ -105,9 +106,9 @@ void AgbMain()
     CheckForFlashMemory();
     InitMainCallbacks();
     InitMapMusic();
-#ifdef BUGFIX
-    SeedRngWithRtc(); // see comment at SeedRngWithRtc definition below
-#endif
+//#ifdef BUGFIX
+//    SeedRngWithRtc(); // see comment at SeedRngWithRtc definition below
+//#endif
     ClearDma3Requests();
     ResetBgs();
     SetDefaultFontsPointer();
@@ -200,17 +201,15 @@ void SetMainCallback2(MainCallback callback)
     gMain.state = 0;
 }
 
-void StartTimer1(void)
-{
-    REG_TM1CNT_H = 0x80;
-}
+//void StartTimer1(void)
+//{
+//    REG_TM1CNT_H = 0x80;
+//}
 
 void SeedRngAndSetTrainerId(void)
 {
-    u16 val = REG_TM1CNT_L;
-    SeedRng(val);
-    REG_TM1CNT_H = 0;
-    sTrainerId = val;
+    SeedRngIfNeeded();
+    sTrainerId = Random();
 }
 
 u16 GetGeneratedTrainerIdLower(void)
@@ -226,12 +225,14 @@ void EnableVCountIntrAtLine150(void)
 }
 
 // FRLG commented this out to remove RTC, however Emerald didn't undo this!
+// Note that the random branch fixes this problem through other means. -tertu
 #ifdef BUGFIX
 static void SeedRngWithRtc(void)
 {
-    u32 seed = RtcGetMinuteCount();
-    seed = (seed >> 16) ^ (seed & 0xFFFF);
-    SeedRng(seed);
+// Commented out to fix compile
+//    u32 seed = RtcGetMinuteCount();
+//    seed = (seed >> 16) ^ (seed & 0xFFFF);
+//    SeedRng(seed);
 }
 #endif
 
@@ -383,7 +384,7 @@ static void VBlankIntr(void)
     TryReceiveLinkBattleData();
 
     if (!gMain.inBattle || !(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_FRONTIER | BATTLE_TYPE_RECORDED)))
-        Random();
+        BurnRandom();
 
     UpdateWirelessStatusIndicatorSprite();
 

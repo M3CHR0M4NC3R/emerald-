@@ -31,7 +31,9 @@ void ResetLotteryCorner(void)
 
 void SetRandomLotteryNumber(u16 i)
 {
-    u32 var = Random();
+    u32 var;
+    SeedRngIfNeeded();
+    var = Random();
 
     while (--i != 0xFFFF)
         var = ISO_RANDOMIZE2(var);

@@ -1,0 +1,3 @@
+gRngState
+gRng2State
+gRngStatus

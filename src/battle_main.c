@@ -954,6 +954,7 @@ static void CB2_HandleStartBattle(void)
 {
     u8 playerMultiplayerId;
     u8 enemyMultiplayerId;
+    u32 dummy;
 
     RunTasks();
     AnimateSprites();
@@ -1115,10 +1116,11 @@ static void CB2_HandleStartBattle(void)
         }
         break;
     case 16:
-        // Both players are using Emerald, send rng seed for recorded battle
+        dummy = Random32();
+        // Both players are using Emerald, send dummy RNG seed
         if (IsLinkTaskFinished())
         {
-            SendBlock(BitmaskAllOtherLinkPlayers(), &gRecordedBattleRngSeed, sizeof(gRecordedBattleRngSeed));
+            SendBlock(BitmaskAllOtherLinkPlayers(), &dummy, sizeof(dummy));
             gBattleCommunication[MULTIUSE_STATE]++;
         }
         break;
@@ -1127,8 +1129,9 @@ static void CB2_HandleStartBattle(void)
         if ((GetBlockReceivedStatus() & 3) == 3)
         {
             ResetBlockReceivedFlags();
-            if (!(gBattleTypeFlags & BATTLE_TYPE_IS_MASTER))
-                memcpy(&gRecordedBattleRngSeed, gBlockRecvBuffer[enemyMultiplayerId], sizeof(gRecordedBattleRngSeed));
+            // do nothing. recorded link battles do not work.
+            //if (!(gBattleTypeFlags & BATTLE_TYPE_IS_MASTER))
+            //    memcpy(&gRecordedBattleRngSeed, gBlockRecvBuffer[enemyMultiplayerId], sizeof(gRecordedBattleRngSeed));
             gBattleCommunication[MULTIUSE_STATE]++;
         }
         break;
@@ -1378,7 +1381,7 @@ static void CB2_HandleStartMultiPartnerBattle(void)
         // Send rng seed for recorded battle
         if (IsLinkTaskFinished())
         {
-            SendBlock(BitmaskAllOtherLinkPlayers(), &gRecordedBattleRngSeed, sizeof(gRecordedBattleRngSeed));
+            SendBlock(BitmaskAllOtherLinkPlayers(), &gRecordedBattleRngState, sizeof(gRecordedBattleRngState));
             gBattleCommunication[MULTIUSE_STATE]++;
         }
         break;
@@ -1388,7 +1391,7 @@ static void CB2_HandleStartMultiPartnerBattle(void)
         {
             ResetBlockReceivedFlags();
             if (!(gBattleTypeFlags & BATTLE_TYPE_IS_MASTER))
-                memcpy(&gRecordedBattleRngSeed, gBlockRecvBuffer[partnerMultiplayerId], sizeof(gRecordedBattleRngSeed));
+                memcpy(&gRecordedBattleRngState, gBlockRecvBuffer[partnerMultiplayerId], sizeof(gRecordedBattleRngState));
             gBattleCommunication[MULTIUSE_STATE]++;
         }
         break;
@@ -1805,9 +1808,9 @@ static void CB2_HandleStartMultiBattle(void)
         {
             for (id = 0; id < MAX_LINK_PLAYERS && (gLinkPlayers[id].version & 0xFF) == VERSION_EMERALD; id++);
 
-            if (id == MAX_LINK_PLAYERS)
-                gBattleCommunication[MULTIUSE_STATE] = 8;
-            else
+            //if (id == MAX_LINK_PLAYERS)
+            //    gBattleCommunication[MULTIUSE_STATE] = 8;
+            //else
                 gBattleCommunication[MULTIUSE_STATE] = 10;
         }
         else
@@ -1820,7 +1823,7 @@ static void CB2_HandleStartMultiBattle(void)
         {
             u32 *ptr = gBattleStruct->multiBuffer.battleVideo;
             ptr[0] = gBattleTypeFlags;
-            ptr[1] = gRecordedBattleRngSeed; // UB: overwrites berry data
+            ptr[1] = Random32(); // UB: overwrites berry data
             SendBlock(BitmaskAllOtherLinkPlayers(), ptr, sizeof(gBattleStruct->multiBuffer.battleVideo));
             gBattleCommunication[MULTIUSE_STATE]++;
         }
@@ -1828,7 +1831,9 @@ static void CB2_HandleStartMultiBattle(void)
     case 9:
         if ((GetBlockReceivedStatus() & 0xF) == 0xF)
         {
+
             ResetBlockReceivedFlags();
+            /*
             for (var = 0; var < 4; var++)
             {
                 u32 blockValue = gBlockRecvBuffer[var][0];
@@ -1837,7 +1842,7 @@ static void CB2_HandleStartMultiBattle(void)
                     memcpy(&gRecordedBattleRngSeed, &gBlockRecvBuffer[var][2], sizeof(gRecordedBattleRngSeed));
                     break;
                 }
-            }
+            }*/
 
             gBattleCommunication[MULTIUSE_STATE]++;
         }
@@ -2083,7 +2088,7 @@ void VBlankCB_Battle(void)
 {
     // Change gRngSeed every vblank unless the battle could be recorded.
     if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_FRONTIER | BATTLE_TYPE_RECORDED)))
-        Random();
+        BurnRandom();
 
     SetGpuReg(REG_OFFSET_BG0HOFS, gBattle_BG0_X);
     SetGpuReg(REG_OFFSET_BG0VOFS, gBattle_BG0_Y);
@@ -2295,13 +2300,15 @@ static void EndLinkBattleInSteps(void)
 
             if (!gSaveBlock2Ptr->frontier.disableRecordBattle && i == battlerCount)
             {
-                if (FlagGet(FLAG_SYS_FRONTIER_PASS))
+                // Battle recordings are broken if we are master, handle it.
+                if (gMain.anyLinkBattlerHasFrontierPass && (gBattleTypeFlags & BATTLE_TYPE_IS_MASTER) )
                 {
-                    // Ask player if they want to record the battle
+                    // Warn the player to warn players this battle can't be recorded
+                    // We can't stop other players from recording a battle.
                     FreeAllWindowBuffers();
                     SetMainCallback2(CB2_InitAskRecordBattle);
                 }
-                else if (!gMain.anyLinkBattlerHasFrontierPass)
+                else if (gReceivedRemoteLinkPlayers != 0)
                 {
                     // No players can record this battle, end
                     SetMainCallback2(gMain.savedCallback);
@@ -2501,53 +2508,11 @@ static void AskRecordBattle(void)
     case STATE_PRINT_YES_NO:
         if (!IsTextPrinterActive(B_WIN_MSG))
         {
-            HandleBattleWindow(YESNOBOX_X_Y, 0);
-            BattlePutTextOnWindow(gText_BattleYesNoChoice, B_WIN_YESNO);
-            gBattleCommunication[CURSOR_POSITION] = 1;
-            BattleCreateYesNoCursorAt(1);
             gBattleCommunication[MULTIUSE_STATE]++;
         }
         break;
     case STATE_HANDLE_YES_NO:
-        if (JOY_NEW(DPAD_UP))
-        {
-            if (gBattleCommunication[CURSOR_POSITION] != 0)
-            {
-                // Moved cursor onto Yes
-                PlaySE(SE_SELECT);
-                BattleDestroyYesNoCursorAt(gBattleCommunication[CURSOR_POSITION]);
-                gBattleCommunication[CURSOR_POSITION] = 0;
-                BattleCreateYesNoCursorAt(0);
-            }
-        }
-        else if (JOY_NEW(DPAD_DOWN))
-        {
-            if (gBattleCommunication[CURSOR_POSITION] == 0)
-            {
-                // Moved cursor onto No
-                PlaySE(SE_SELECT);
-                BattleDestroyYesNoCursorAt(gBattleCommunication[CURSOR_POSITION]);
-                gBattleCommunication[CURSOR_POSITION] = 1;
-                BattleCreateYesNoCursorAt(1);
-            }
-        }
-        else if (JOY_NEW(A_BUTTON))
-        {
-            PlaySE(SE_SELECT);
-            if (gBattleCommunication[CURSOR_POSITION] == 0)
-            {
-                // Selected Yes
-                HandleBattleWindow(YESNOBOX_X_Y, WINDOW_CLEAR);
-                gBattleCommunication[1] = MoveRecordedBattleToSaveData();
-                gBattleCommunication[MULTIUSE_STATE] = STATE_RECORD_YES;
-            }
-            else
-            {
-                // Selected No
-                gBattleCommunication[MULTIUSE_STATE]++;
-            }
-        }
-        else if (JOY_NEW(B_BUTTON))
+        if (JOY_NEW(A_BUTTON | B_BUTTON))
         {
             PlaySE(SE_SELECT);
             gBattleCommunication[MULTIUSE_STATE]++;
@@ -4279,7 +4244,7 @@ static void HandleTurnActionSelectionState(void)
                     else if (gBattleTypeFlags & BATTLE_TYPE_PALACE
                              && gChosenActionByBattler[GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(gActiveBattler)))] == B_ACTION_USE_MOVE)
                     {
-                        gRngValue = gBattlePalaceMoveSelectionRngValue;
+                        gRngState = gBattlePalaceMoveSelectionRngState;
                         RecordedBattle_ClearBattlerAction(GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(gActiveBattler))), 1);
                     }
                     else

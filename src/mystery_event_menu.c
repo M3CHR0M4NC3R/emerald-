@@ -19,6 +19,7 @@
 #include "text_window.h"
 #include "decompress.h"
 #include "constants/rgb.h"
+#include "random.h"
 
 enum {
     WIN_MSG,
@@ -87,6 +88,7 @@ void CB2_InitMysteryEventMenu(void)
     SetVBlankCallback(VBlankCB);
     ResetBgsAndClearDma3BusyFlags(0);
     InitBgsFromTemplates(0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
+    SeedRngIfNeeded();
     if (InitWindows(sWindowTemplates))
     {
         s32 i;
