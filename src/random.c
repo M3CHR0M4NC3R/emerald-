@@ -8,8 +8,8 @@ struct RngState gRng2State;
 volatile enum RngStatus gRngStatus;
 
 // IWRAM common
-COMMON_DATA u32 gRngValue = 0;
-COMMON_DATA u32 gRng2Value = 0;
+//COMMON_DATA u32 gRngValue = 0;
+//COMMON_DATA u32 gRng2Value = 0;
 #define RANDOM_IMPL_NONCONST
 #define RANDOM_IMPL_CONST __attribute__((const))
 #include "_random_impl.h"
@@ -97,4 +97,20 @@ void StartSeedTimer(void)
     gRngStatus = UNINITIALIZED;
     REG_TM1CNT_H = 0x80;
     REG_TM2CNT_H = 0x84;
+}
+
+// Returns a random index according to a list of weights
+u8 RandomWeightedIndex(u8 *weights, u8 length) {
+    u32 i;
+    u16 randomValue;
+    u16 weightSum = 0;
+    for (i = 0; i < length; i++)
+        weightSum += weights[i];
+    randomValue = weightSum > 0 ? Random() % weightSum : 0;
+    weightSum = 0;
+    for (i = 0; i < length; i++) {
+        weightSum += weights[i];
+        if (randomValue <= weightSum)
+            return i;
+    }
 }

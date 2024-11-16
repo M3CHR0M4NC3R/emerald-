@@ -72,6 +72,9 @@ RANDOM_NONCONST void _UnlockRandom()
 RANDOM_NONCONST u16 Random(void) {
     return RandomBits(16);
 }
+u16 Random(void);
+u16 Random2(void);
+u8 RandomWeightedIndex(u8 *weights, u8 length);
 
 RANDOM_NONCONST u16 Random2(void) {
     return Random2Bits(16);
