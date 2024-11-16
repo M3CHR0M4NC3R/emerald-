@@ -235,6 +235,16 @@ endif
 
 syms: $(SYM)
 
+run: $(FILE_NAME)
+	@echo "Running Rom..."
+	@mgba-qt $(FILE_NAME).gba
+
+$(FILE_NAME):
+	@if [ ! -f "$(FILE_NAME).gba" ]; then \
+		echo "Error: $(FILE_NAME) does not exist. Please build it first."; \
+		exit 1; \
+	fi
+
 clean: tidy clean-tools clean-generated clean-assets
 	@$(MAKE) clean -C libagbsyscall
 
