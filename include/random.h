@@ -2,6 +2,7 @@
 #define GUARD_RANDOM_H
 
 #include "global.h"
+u16 RandRange(u16 min, u16 max);
 
 struct RngState {
     u32 a;
