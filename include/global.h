@@ -1094,6 +1094,10 @@ struct SaveBlock1
     #ifndef FREE_MYSTERY_EVENT_BUFFERS
     /*0x322C*/ struct MysteryGiftSave mysteryGift;   //876 bytes
     #endif
+    /* will use this unused space for dexnav
+     * note that this is less than enough space 
+     * for EVERY pokemon species, but not every 
+     * species will be available via dexnav */
     #ifndef FREE_FIELD_3598
     /*0x3598*/ u8 unused_3598[0x180];    //384 bytes
     #endif
