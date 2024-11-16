@@ -18,7 +18,7 @@
 
 // free saveblock 1 defines
 //#define FREE_EXTRA_SEEN_FLAGS           //free up extra pokedex seen flags. Frees up 104 bytes
-//#define FREE_FIELD_3598                 //frees up unused saveblock data. 384 bytes
+#define FREE_FIELD_3598                 //frees up unused saveblock data. 384 bytes
 //#define FREE_TRAINER_HILL             //frees up trainer hill data. 28 bytes.                          WARNING THIS HAS BEEN SHOWN TO BREAK MULTI BATTLES
 //#define FREE_MYSTERY_EVENT_BUFFERS    //frees up mystery event and ramScript. roughly 1880 bytes       Needed by FREE_BATTLE_TOWER_E_READER
 //#define FREE_MATCH_CALL                 //frees up match call data. 104 bytes
@@ -1101,6 +1101,9 @@ struct SaveBlock1
     #ifndef FREE_FIELD_3598
     /*0x3598*/ u8 unused_3598[0x180];    //384 bytes
     #endif
+    #if USE_DEXNAV_SEARCH_LEVELS == TRUE
+                   u8 dexNavSearchLevels[384];
+    #endif
     #ifndef FREE_TRAINER_HILL
     /*0x3718*/ u32 trainerHillTimes[NUM_TRAINER_HILL_MODES]; //16 bytes
     #endif
@@ -1121,9 +1124,6 @@ struct SaveBlock1
     /*0x3D64*/ struct TrainerHillSave trainerHill;  //12 bytes
     #endif
     /*0x3D70*/ struct WaldaPhrase waldaPhrase;
-#if USE_DEXNAV_SEARCH_LEVELS == TRUE
-               u8 dexNavSearchLevels[NUM_SPECIES];
-#endif
                u8 dexNavChain;
 };
 // sizeof: 0x3D88
