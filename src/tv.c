@@ -1364,7 +1364,6 @@ void PutFanClubSpecialOnTheAir(void)
         show->fanClubSpecial.idolNameLanguage = LANGUAGE_JAPANESE;
     }
     #endif
-}
 
 void ContestLiveUpdates_Init(u8 round1Placing)
 {
