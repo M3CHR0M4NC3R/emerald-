@@ -2,6 +2,7 @@
 #define GUARD_CHARACTERS_H
 
 #define CHAR_SPACE             0x00
+#define CHAR__                 0x00 // empty
 #define CHAR_A_GRAVE           0x01
 #define CHAR_A_ACUTE           0x02
 #define CHAR_A_CIRCUMFLEX      0x03
@@ -77,6 +78,12 @@
 #define CHAR_DOWN_ARROW        0x7A
 #define CHAR_LEFT_ARROW        0x7B
 #define CHAR_RIGHT_ARROW       0x7C
+// Case-fixing characters
+#define CHAR_FIXED_CASE        0x7D
+#define CHAR_UNFIX_CASE        0x7E
+// When decap disabled, this is instead a normal-width space
+// Use this to decap phrases like "IRON{ZW_SPACE}THORNS" into "IronThorns" or "IRON THORNS"
+#define ZW_SPACE               0x7F
 //
 #define CHAR_SUPER_E           0x84
 #define CHAR_LESS_THAN         0x85
@@ -262,6 +269,10 @@
 #define PLACEHOLDER_ID_MAXIE         0xB
 #define PLACEHOLDER_ID_KYOGRE        0xC
 #define PLACEHOLDER_ID_GROUDON       0xD
+// Fixed-case placeholders
+// These behave the same as their (id & 0x7F),
+// but prepend CHAR_FIXED_CASE
+#define PLACEHOLDER_FIXED_MASK       0x80
 
 // battle placeholders are located in battle_message.h
 

@@ -32,6 +32,7 @@ SECTIONS {
         src/*.o(COMMON);
         *libc.a:*.o(COMMON);
         *libnosys.a:*.o(COMMON);
+        gStackBase = .;
     } > IWRAM
 
     /* BEGIN ROM DATA */

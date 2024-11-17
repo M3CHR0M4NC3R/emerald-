@@ -155,6 +155,7 @@ void CFile::TryConvertString()
     long oldPos = m_pos;
     long oldLineNum = m_lineNum;
     bool noTerminator = false;
+    bool fixedCase = false;
 
     if (m_buffer[m_pos] != '_' || (m_pos > 0 && IsIdentifierChar(m_buffer[m_pos - 1])))
         return;
@@ -164,6 +165,13 @@ void CFile::TryConvertString()
     if (m_buffer[m_pos] == '_')
     {
         noTerminator = true;
+        m_pos++;
+    }
+
+    // Fixed-case string
+    if (m_buffer[m_pos] == 'C')
+    {
+        fixedCase = true;
         m_pos++;
     }
 
@@ -194,7 +202,13 @@ void CFile::TryConvertString()
 
             try
             {
-                m_pos += stringParser.ParseString(m_pos, s, length);
+                if (fixedCase) {
+                    s[0] = '\x7d'; // FIXED_CASE
+                    m_pos += stringParser.ParseString(m_pos, s+1, length);
+                    length++;
+                } else {
+                    m_pos += stringParser.ParseString(m_pos, s, length);
+                }
             }
             catch (std::runtime_error& e)
             {

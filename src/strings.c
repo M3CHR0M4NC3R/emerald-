@@ -2,6 +2,7 @@
 #include "strings.h"
 #include "battle_pyramid_bag.h"
 #include "item_menu.h"
+#include "text.h"
 
 ALIGNED(4)
 const u8 gText_ExpandedPlaceholder_Empty[] = _("");
@@ -57,6 +58,49 @@ ALIGNED(4) const u8 gText_PickCancel[] = _("{DPAD_UPDOWN}PICK {A_BUTTON}{B_BUTTO
 ALIGNED(4) const u8 gText_AButtonExit[] = _("{A_BUTTON}EXIT");
 const u8 gText_BirchBoy[] = _("BOY");
 const u8 gText_BirchGirl[] = _("GIRL");
+
+#if (DECAP_ENABLED)
+const u8 gText_DefaultNameStu[] = _("Stu");
+const u8 gText_DefaultNameMilton[] = _("Milton");
+const u8 gText_DefaultNameTom[] = _("Tom");
+const u8 gText_DefaultNameKenny[] = _("Kenny");
+const u8 gText_DefaultNameReid[] = _("Reid");
+const u8 gText_DefaultNameJude[] = _("Jude");
+const u8 gText_DefaultNameJaxson[] = _("Jaxson");
+const u8 gText_DefaultNameEaston[] = _("Easton");
+const u8 gText_DefaultNameWalker[] = _("Walker");
+const u8 gText_DefaultNameTeru[] = _("Teru");
+const u8 gText_DefaultNameJohnny[] = _("Johnny");
+const u8 gText_DefaultNameBrett[] = _("Brett");
+const u8 gText_DefaultNameSeth[] = _("Seth");
+const u8 gText_DefaultNameTerry[] = _("Terry");
+const u8 gText_DefaultNameCasey[] = _("Casey");
+const u8 gText_DefaultNameDarren[] = _("Darren");
+const u8 gText_DefaultNameLandon[] = _("Landon");
+const u8 gText_DefaultNameCollin[] = _("Collin");
+const u8 gText_DefaultNameStanley[] = _("Stanley");
+const u8 gText_DefaultNameQuincy[] = _("Quincy");
+const u8 gText_DefaultNameKimmy[] = _("Kimmy");
+const u8 gText_DefaultNameTiara[] = _("Tiara");
+const u8 gText_DefaultNameBella[] = _("Bella");
+const u8 gText_DefaultNameJayla[] = _("Jayla");
+const u8 gText_DefaultNameAllie[] = _("Allie");
+const u8 gText_DefaultNameLianna[] = _("Lianna");
+const u8 gText_DefaultNameSara[] = _("Sara");
+const u8 gText_DefaultNameMonica[] = _("Monica");
+const u8 gText_DefaultNameCamila[] = _("Camila");
+const u8 gText_DefaultNameAubree[] = _("Aubree");
+const u8 gText_DefaultNameRuthie[] = _("Ruthie");
+const u8 gText_DefaultNameHazel[] = _("Hazel");
+const u8 gText_DefaultNameNadine[] = _("Nadine");
+const u8 gText_DefaultNameTanja[] = _("Tanja");
+const u8 gText_DefaultNameYasmin[] = _("Yasmin");
+const u8 gText_DefaultNameNicola[] = _("Nicola");
+const u8 gText_DefaultNameLillie[] = _("Lillie");
+const u8 gText_DefaultNameTerra[] = _("Terra");
+const u8 gText_DefaultNameLucy[] = _("Lucy");
+const u8 gText_DefaultNameHalie[] = _("Halie");
+#else
 const u8 gText_DefaultNameStu[] = _("STU");
 const u8 gText_DefaultNameMilton[] = _("MILTON");
 const u8 gText_DefaultNameTom[] = _("TOM");
@@ -97,6 +141,8 @@ const u8 gText_DefaultNameLillie[] = _("LILLIE");
 const u8 gText_DefaultNameTerra[] = _("TERRA");
 const u8 gText_DefaultNameLucy[] = _("LUCY");
 const u8 gText_DefaultNameHalie[] = _("HALIE");
+#endif
+
 const u8 gText_ThisIsAPokemon[] = _("This is what we call a “POKéMON.”{PAUSE 96}\p");
 const u8 gText_5MarksPokemon[] = _("????? POKéMON");
 const u8 gText_UnkHeight[] = _("{CLEAR_TO 0x0C}??'??”");
@@ -173,7 +219,7 @@ const u8 gText_Number[] = _("No. ");
 const u8 gText_Level[] = _("Lv. ");
 const u8 gText_IdNumberSlash[] = _("IDNo. /"); // Unused
 const u8 gText_Name[] = _("NAME");
-const u8 gText_IDNumber[] = _("IDNo.");
+const u8 gText_IDNumber[] = _C("IDNo.");
 const u8 gText_BirchInTrouble[] = _("PROF. BIRCH is in trouble!\nRelease a POKéMON and rescue him!");
 const u8 gText_ConfirmStarterChoice[] = _("Do you choose this POKéMON?");
 const u8 gText_Pokemon4[] = _("POKéMON"); // Unused
@@ -491,7 +537,7 @@ const u8 gText_SpDef4[] = _("SP. DEF");
 const u8 gText_Speed2[] = _("SPEED");
 const u8 gText_HP4[] = _("HP");
 const u8 gText_EmptyString8[] = _(""); // Unused
-const u8 gText_OTSlash[] = _("OT/");
+const u8 gText_OTSlash[] = _C("OT/");
 const u8 gText_RentalPkmn[] = _("RENTAL POKéMON");
 const u8 gText_TypeSlash[] = _("TYPE/");
 const u8 gText_Power[] = _("POWER");
@@ -508,7 +554,7 @@ const u8 gText_Switch[] = _("SWITCH");
 const u8 gText_PkmnInfo[] = _("POKéMON INFO");
 const u8 gText_PkmnSkills[] = _("POKéMON SKILLS");
 const u8 gText_BattleMoves[] = _("BATTLE MOVES");
-const u8 gText_ContestMoves[] = _("C0NTEST MOVES");
+const u8 gText_ContestMoves[] = _("CONTEST MOVES");
 const u8 gText_Info[] = _("INFO");
 const u8 gText_EggWillTakeALongTime[] = _("It looks like this EGG will\ntake a long time to hatch.");
 const u8 gText_EggWillTakeSomeTime[] = _("What will hatch from this?\nIt will take some time.");
@@ -1094,9 +1140,15 @@ const u8 gText_GamePlayCannotBeContinued[] = _("{COLOR RED}“Game play cannot b
 const u8 gText_CheckCompleted[] = _("Check completed.\nAttempting to save again.\nPlease wait.");
 const u8 gText_SaveCompleteGameCannotContinue[] = _("Save completed.\n{COLOR RED}“Game play cannot be continued.\nReturning to the title screen.”");
 const u8 gText_SaveCompletePressA[] = _("Save completed.\n{COLOR RED}“Please press the A Button.”");
+#if (DECAP_ENABLED) && !(DECAP_MAP_NAMES)
+const u8 gText_Ferry[] = _C("FERRY");
+const u8 gText_SecretBase[] = _C("SECRET BASE");
+const u8 gText_Hideout[] = _C("HIDEOUT");
+#else
 const u8 gText_Ferry[] = _("FERRY");
 const u8 gText_SecretBase[] = _("SECRET BASE");
 const u8 gText_Hideout[] = _("HIDEOUT");
+#endif
 const u8 gText_ResetRTCConfirmCancel[] = _("Reset RTC?\nA: Confirm, B: Cancel");
 const u8 gText_PresentTime[] = _("Present time in game");
 const u8 gText_PreviousTime[] = _("Previous time in game");
@@ -1190,7 +1242,7 @@ const u8 gText_FirePunch48BP[] = _("FIRE PUNCH{CLEAR_TO 0x4E}48BP");
 const u8 gText_PkmnFainted_FldPsn[] = _("{STR_VAR_1} fainted…\p\n");
 const u8 gText_Marco[] = _("MARCO");
 const u8 gText_TrainerCardName[] = _("NAME: ");
-const u8 gText_TrainerCardIDNo[] = _("IDNo.");
+const u8 gText_TrainerCardIDNo[] = _C("IDNo.");
 const u8 gText_TrainerCardMoney[] = _("MONEY");
 const u8 gText_PokeDollar[] = _("¥"); // Unused
 const u8 gText_TrainerCardPokedex[] = _("POKéDEX");

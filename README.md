@@ -13,8 +13,8 @@
 
 This hack **IS** compatible with vanilla saves!
 
+<<<<<<< HEAD
 
 This is a fork of the [matching decompilation](https://github.com/pret/pokeemerald) at [PRET](https://github.com/pret).
 
 This fork tries to maintain vanilla compatibility whenever possible. It doesn't increase the size of any save data structure or the object event structure.
-

@@ -7,6 +7,44 @@
 // loaded at once but not copied to vram yet.
 #define TEXT_SKIP_DRAW 0xFF
 
+/*
+Enable automatic decapitalization of *all* text
+Exceptions:
+- Separated bigrams: "TM01", " PC ", " EV ", etc.
+- Player names, nicknames, box names
+- Strings beginning with {FIXED_CASE}:
+  - C strings that use `_C` or `__C`
+  - ASM strings that use `.fixstr`
+- If mirroring enabled, string addresses passed through MirrorPtr
+
+Note: If using poryscript, see the README for an argument
+      to pass for better compatibility with this + formatted strings
+*/
+#define DECAP_ENABLED TRUE
+// Enables signaling that a string's case should be preserved
+// by *mirroring* its address: i.e 08xxxxxx to 0Axxxxxx
+#define DECAP_MIRRORING TRUE
+#if DECAP_MIRRORING
+#define ROM_MIRROR_MASK (0x02000000)
+#define RAM_MIRROR_MASK (0x00800000)
+#define ROM_MIRROR_PTR(x) ((void*)(((u32)(x)) | ROM_MIRROR_MASK))
+#define RAM_MIRROR_PTR(x) ((void*)(((u32)(x)) | RAM_MIRROR_MASK))
+#endif
+
+// If TRUE, *all* Pokemon nicknames and player names will be decapitalized.
+// Otherwise, their case will be preserved. Default FALSE
+#define DECAP_NICKNAMES     FALSE
+
+#define DECAP_MAIN_MENU     TRUE // main menu options
+#define DECAP_OPTION_MENU   TRUE // Option menu texts
+#define DECAP_START_MENU    TRUE // Start menu options/save menu text
+#define DECAP_PARTY_MENU    TRUE  // Party menu texts
+#define DECAP_MAP_NAMES     TRUE // Map/location names
+#define DECAP_EASY_CHAT     TRUE // Both words and interface
+#define DECAP_FIELD_MSG     TRUE // Field messages (including scripts!)
+#define DECAP_SUMMARY       TRUE // Summary interface
+#define DECAP_ITEM_NAMES    TRUE // Via ItemId_GetName
+
 enum {
     FONT_SMALL,
     FONT_NORMAL,
@@ -92,6 +130,11 @@ struct TextPrinter
     u8 scrollDistance;
     u8 minLetterSpacing;  // 0x20
     u8 japanese;
+    #if DECAP_ENABLED
+    // used to determine whether to decap strings
+    u8 lastChar;
+    u8 nextLastChar;
+    #endif
 };
 
 struct FontInfo
@@ -134,6 +177,31 @@ extern TextFlags gTextFlags;
 
 extern u8 gDisableTextPrinters;
 extern struct TextGlyph gCurGlyph;
+
+#if DECAP_ENABLED
+extern const u16 gCharAttrTable[];
+#define CHAR_MASK 0xFF
+// in gCharAttrTable, 0x100 represents a character treated as uppercase,
+// but that maps to itself; only the lower 8 bits are used for mapping
+#define UPPERCASE_FLAG 0x100
+#define UPPERCASE_MASK (UPPERCASE_FLAG | CHAR_MASK)
+// Similarly, 0x200 represents a character treated as a bigram separator
+// i.e: whitespace, ctrl chars, /, digits
+#define BIGRAM_SEP_FLAG 0x200
+#define BIGRAM_SEP_MASK BIGRAM_SEP_FLAG
+#define IS_UPPER(x) (gCharAttrTable[(x) & CHAR_MASK] & UPPERCASE_MASK)
+// Includes whitespace, digits, /, and ctrl chars
+// Basically helps match the regex [/0-9\s]([A-Z]{2})[/0-9\s]
+#define IS_BIGRAM_SEP(x) (gCharAttrTable[(x) & CHAR_MASK] & BIGRAM_SEP_MASK)
+#define TO_LOWER(x) (((x) + gCharAttrTable[(x)]) & CHAR_MASK)
+
+#if DECAP_MIRRORING
+void * UnmirrorPtr(const void * ptr);
+void * MirrorPtr(const void * ptr);
+bool32 IsMirrorPtr(const void *ptr);
+u16 AddTextPrinterFixedCaseParameterized(u8 windowId, u8 fontId, const u8 *str, u8 x, u8 y, u8 speed, void (*callback)(struct TextPrinterTemplate *, u16));
+#endif
+#endif
 
 void DeactivateAllTextPrinters(void);
 u16 AddTextPrinterParameterized(u8 windowId, u8 fontId, const u8 *str, u8 x, u8 y, u8 speed, void (*callback)(struct TextPrinterTemplate *, u16));
