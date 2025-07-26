@@ -1589,7 +1589,7 @@ static void ResetPokedexView(struct PokedexView *pokedexView)
         pokedexView->unkArr3[i] = 0;
 }
 
-#define HGSS_DEX FALSE
+#define HGSS_DEX TRUE
 
 void CB2_OpenPokedex(void)
 {

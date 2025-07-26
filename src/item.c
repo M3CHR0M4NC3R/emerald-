@@ -20,6 +20,12 @@ static bool8 CheckPyramidBagHasSpace(u16 itemId, u16 count);
 
 EWRAM_DATA struct BagPocket gBagPockets[POCKETS_COUNT] = {0};
 
+#if (DECAP_ENABLED) && !(DECAP_ITEMS)
+#define _I(x) _C(x)
+#else
+#define _I(x) _(x)
+#endif
+
 #include "data/text/item_descriptions.h"
 #include "data/items.h"
 

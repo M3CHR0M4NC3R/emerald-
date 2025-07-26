@@ -3825,7 +3825,7 @@ static void PrintNewMoveDetailsOrCancelText(void)
 
     if (sMonSummaryScreen->newMove == MOVE_NONE)
     {
-        PrintTextOnWindow(windowId1, gText_Cancel, 0, 65, 0, 1);
+        PrintTextOnWindow(windowId1, gText_Cancel2, 0, 65, 0, 1);
     }
     else
     {

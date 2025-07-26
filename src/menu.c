@@ -2117,7 +2117,7 @@ void BufferSaveMenuText(u8 textId, u8 *dest, u8 color)
     switch (textId)
     {
         case SAVE_MENU_NAME:
-            StringCopy(string, gSaveBlock2Ptr->playerName);
+            StringCopy_PlayerName(string, gSaveBlock2Ptr->playerName);
             break;
         case SAVE_MENU_CAUGHT:
             if (IsNationalPokedexEnabled())

@@ -9,6 +9,8 @@
 #include "overworld.h"
 #include "pokemon_storage_system.h"
 #include "main.h"
+#include "string_util.h"
+#include "text.h"
 #include "trainer_hill.h"
 #include "link.h"
 #include "constants/game_stat.h"
@@ -760,6 +762,7 @@ u8 HandleSavingData(u8 saveType)
         break;
     }
     gTrainerHillVBlankCounter = backupVar;
+
     return 0;
 }
 
@@ -838,6 +841,7 @@ bool8 WriteSaveBlock2(void)
     // Because RestoreSaveBackupVars is called immediately prior, gIncrementalSectorId will always be 0 below,
     // so this function only saves the first sector (SECTOR_ID_SAVEBLOCK2)
     HandleReplaceSectorAndVerify(gIncrementalSectorId + 1, gRamSaveSectorLocations);
+
     return FALSE;
 }
 
@@ -886,6 +890,7 @@ u8 LoadGameSave(u8 saveType)
     default:
         status = TryLoadSaveSlot(FULL_SAVE_SLOT, gRamSaveSectorLocations);
         CopyPartyAndObjectsFromSave();
+
         gSaveFileStatus = status;
         gGameContinueCallback = 0;
         break;
@@ -1001,6 +1006,7 @@ void Task_LinkFullSave(u8 taskId)
     case 3:
         if (!tInBattleTower)
             SetContinueGameWarpStatusToDynamicWarp();
+
         LinkFullSave_Init();
         tState = 4;
         break;

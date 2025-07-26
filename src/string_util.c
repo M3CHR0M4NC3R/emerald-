@@ -27,7 +27,7 @@ static const s32 sPowersOfTen[] =
 
 u8 *StringCopy_Nickname(u8 *dest, const u8 *src)
 {
-    u8 i;
+    u32 i;
     u32 limit = POKEMON_NAME_LENGTH;
 
     for (i = 0; i < limit; i++)
@@ -46,6 +46,11 @@ u8 *StringGet_Nickname(u8 *str)
 {
     u8 i;
     u32 limit = POKEMON_NAME_LENGTH;
+
+    #if (DECAP_ENABLED)
+    if (*str == CHAR_FIXED_CASE)
+        str++;
+    #endif
 
     for (i = 0; i < limit; i++)
         if (str[i] == EOS)
@@ -123,6 +128,13 @@ u16 StringLength(const u8 *str)
 
 s32 StringCompare(const u8 *str1, const u8 *str2)
 {
+    // Ignore leading fixed-case chars
+    #if DECAP_ENABLED
+    while (*str1 == CHAR_FIXED_CASE)
+        str1++;
+    while (*str2 == CHAR_FIXED_CASE)
+        str2++;
+    #endif
     while (*str1 == *str2)
     {
         if (*str1 == EOS)
@@ -136,6 +148,13 @@ s32 StringCompare(const u8 *str1, const u8 *str2)
 
 s32 StringCompareN(const u8 *str1, const u8 *str2, u32 n)
 {
+    // Ignore leading fixed-case chars
+    #if DECAP_ENABLED
+    while (*str1 == CHAR_FIXED_CASE)
+        str1++;
+    while (*str2 == CHAR_FIXED_CASE)
+        str2++;
+    #endif
     while (*str1 == *str2)
     {
         if (*str1 == EOS)
@@ -344,7 +363,7 @@ u8 *StringExpandPlaceholders(u8 *dest, const u8 *src)
         {
         case PLACEHOLDER_BEGIN:
             placeholderId = *src++;
-            expandedString = GetExpandedPlaceholder(placeholderId);
+            expandedString = GetExpandedPlaceholder(placeholderId & ~PLACEHOLDER_FIXED_MASK);
             dest = StringExpandPlaceholders(dest, expandedString);
             break;
         case EXT_CTRL_CODE_BEGIN:
@@ -698,6 +717,11 @@ static const u8 *SkipExtCtrlCode(const u8 *s)
         s++;
         s += GetExtCtrlCodeLength(*s);
     }
+    #if DECAP_ENABLED
+    while (*s == CHAR_FIXED_CASE || *s == CHAR_UNFIX_CASE)
+        s++;
+    #endif
+
 
     return s;
 }

@@ -2328,7 +2328,7 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst)
         if (*src == PLACEHOLDER_BEGIN)
         {
             src++;
-            switch (*src)
+            switch (*src & ~PLACEHOLDER_FIXED_MASK)
             {
             case B_TXT_BUFF1:
                 if (gBattleTextBuff1[0] == B_BUFF_PLACEHOLDER_BEGIN)
