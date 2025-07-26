@@ -33,7 +33,7 @@ EverGrandeCity_HallOfFame_EventScript_ResetDefeatedEventLegendaries::
 	clearflag FLAG_DEFEATED_HO_OH
 	return
 
-EverGrandeCity_HallOfFame_EventScript_ResetDefeatedLegendaries
+EverGrandeCity_HallOfFame_EventScript_ResetDefeatedLegendaries::
     clearflag FLAG_DEFEATED_REGIROCK
     clearflag FLAG_DEFEATED_REGICE
     clearflag FLAG_DEFEATED_REGISTEEL
