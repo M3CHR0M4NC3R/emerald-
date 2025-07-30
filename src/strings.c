@@ -1285,6 +1285,10 @@ const u8 gText_Ferry[] = _("FERRY");
 const u8 gText_SecretBase[] = _("SECRET BASE");
 const u8 gText_Hideout[] = _("HIDEOUT");
 #endif
+
+const u8 gText_SaveFileOldUpdated[] = _("Your save file is from an older release\nof Emerald ++.\pYour save will be updated. Please back\nup your old save if you wish to keep it.");
+const u8 gText_SaveFileOldErrored[] = _("Your save file is from an older release\nof Emerald ++.\pThe attempt to update the save file\nhas failed.\pPlease report this to m3chr0m4nc3r\non github.");
+
 const u8 gText_ResetRTCConfirmCancel[] = _("Reset RTC?\nA: Confirm, B: Cancel");
 const u8 gText_PresentTime[] = _("Present time in game");
 const u8 gText_PreviousTime[] = _("Previous time in game");

@@ -232,6 +232,10 @@ extern const u8 gText_Pokemon[];
 extern const u8 gText_InParty[];
 extern const u8 gText_InGameClockUsable[];
 
+// save versioning texts
+extern const u8 gText_SaveFileOldUpdated[];
+extern const u8 gText_SaveFileOldErrored[];
+
 // reset rtc screen texts
 extern const u8 gText_Day[];
 extern const u8 gText_Colon3[];
