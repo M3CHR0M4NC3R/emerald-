@@ -204,7 +204,7 @@
               {
                 "min_level": 4,
                 "max_level": 4,
-                "species": "SPECIES_ZIGZAGOON"
+                "species": "SPECIES_SURSKIT"
               },
               {
                 "min_level": 3,
@@ -1224,14 +1224,14 @@
                 "species": "SPECIES_SEVIPER"
               },
               {
-                "min_level": 15,
-                "max_level": 15,
-                "species": "SPECIES_SEVIPER"
-              },
-              {
                 "min_level": 17,
                 "max_level": 17,
-                "species": "SPECIES_SEVIPER"
+                "species": "SPECIES_ZANGOOSE"
+              },
+              {
+                "min_level": 15,
+                "max_level": 15,
+                "species": "SPECIES_SURSKIT"
               },
               {
                 "min_level": 15,
@@ -1489,7 +1489,7 @@
               {
                 "min_level": 13,
                 "max_level": 13,
-                "species": "SPECIES_SEEDOT"
+                "species": "SPECIES_SURSKIT"
               }
             ]
           },
