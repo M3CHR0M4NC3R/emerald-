@@ -3344,9 +3344,9 @@ static void BufferTradeSceneStrings(void)
     }
     else
     {
-        ingameTrade = &sIngameTrades[gSpecialVar_0x8004];
-        StringCopy(gStringVar1, ingameTrade->otName);
-        StringCopy_Nickname(gStringVar3, ingameTrade->nickname);
+        GetMonData(&gEnemyParty[0], MON_DATA_OT_NAME, gStringVar1);
+        GetMonData(&gEnemyParty[0], MON_DATA_NICKNAME, name);
+        StringCopy_Nickname(gStringVar3, name);
         GetMonData(&gPlayerParty[gSpecialVar_0x8005], MON_DATA_NICKNAME, name);
         StringCopy_Nickname(gStringVar2, name);
     }
@@ -4621,7 +4621,10 @@ u16 GetTradeSpecies(void)
 
 void CreateInGameTradePokemon(void)
 {
-    CreateInGameTradePokemonInternal(gSpecialVar_0x8005, gSpecialVar_0x8004);
+    if(gSpecialVar_0x8004 == 6)  // Version 1 (a value greater than return value range of 0-5 and not 255)
+        gEnemyParty[0] = gPlayerParty[gSpecialVar_0x8005];
+    else
+        CreateInGameTradePokemonInternal(gSpecialVar_0x8005, gSpecialVar_0x8004);
 }
 
 static void CB2_UpdateLinkTrade(void)
