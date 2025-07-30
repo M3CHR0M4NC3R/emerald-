@@ -4462,7 +4462,7 @@
               {
                 "min_level": 27,
                 "max_level": 27,
-                "species": "SPECIES_SHUPPET"
+                "species": "SPECIES_MEDITITE"
               },
               {
                 "min_level": 28,
@@ -4477,7 +4477,7 @@
               {
                 "min_level": 29,
                 "max_level": 29,
-                "species": "SPECIES_VULPIX"
+                "species": "SPECIES_MEDITITE"
               },
               {
                 "min_level": 27,
@@ -7355,7 +7355,7 @@
               {
                 "min_level": 40,
                 "max_level": 40,
-                "species": "SPECIES_LAIRON"
+                "species": "SPECIES_MEDICHAM"
               },
               {
                 "min_level": 38,
@@ -7373,9 +7373,9 @@
                 "species": "SPECIES_GOLBAT"
               },
               {
-                "min_level": 42,
-                "max_level": 42,
-                "species": "SPECIES_HARIYAMA"
+                "min_level": 38,
+                "max_level": 38,
+                "species": "SPECIES_MEDITITE"
               },
               {
                 "min_level": 42,
