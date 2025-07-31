@@ -339,6 +339,7 @@ SECTIONS {
         src/gym_leader_rematch.o(.text);
         src/battle_transition_frontier.o(.text);
         src/international_string_util.o(.text);
+        src/tm_case.o(.text);
         src/dexnav.o(.text);
     } > ROM =0
 
@@ -704,6 +705,7 @@ SECTIONS {
         src/m4a_tables.o(.rodata);
         data/sound_data.o(.rodata);
         src/dexnav.o(.rodata);
+        src/tm_case.o(.rodata);
     } > ROM =0
 
     song_data :
