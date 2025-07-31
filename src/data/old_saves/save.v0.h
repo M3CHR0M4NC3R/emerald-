@@ -230,7 +230,7 @@ bool8 UpdateSave_v0_v1(const struct SaveSectorLocation *locations)
     COPY_ARRAY(bagPocket_Berries);
     
     COPY_BLOCK(pokeblocks);
-    COPY_BLOCK(seen1);
+    //COPY_BLOCK(seen1);
     COPY_BLOCK(berryBlenderRecords);
     COPY_FIELD(trainerRematchStepCounter);
     COPY_BLOCK(trainerRematches);
@@ -284,7 +284,6 @@ bool8 UpdateSave_v0_v1(const struct SaveSectorLocation *locations)
     COPY_BLOCK(trainerHillTimes);
     COPY_FIELD(ramScript);
     COPY_FIELD(recordMixingGift);
-    COPY_BLOCK(seen2);
     COPY_FIELD(lilycoveLady);
     COPY_BLOCK(trainerNameRecords);
     COPY_BLOCK(registeredTexts);

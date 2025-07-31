@@ -47,9 +47,7 @@ static u8 HandleReplaceSector(u16, const struct SaveSectorLocation *);
 
 #define SAVEBLOCK_CHUNK(structure, chunkNum)                                   \
 {                                                                              \
-    chunkNum * SECTOR_DATA_SIZE,                                               \
-    sizeof(structure) >= chunkNum * SECTOR_DATA_SIZE ?                         \
-    min(sizeof(structure) - chunkNum * SECTOR_DATA_SIZE, SECTOR_DATA_SIZE) : 0 \
+    chunkNum * SECTOR_DATA_SIZE, SECTOR_DATA_SIZE                              \
 }
 
 struct
