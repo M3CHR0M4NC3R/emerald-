@@ -1,5 +1,6 @@
 #include "global.h"
 #include "save.h"
+#include "item.h"
 
 struct SaveBlock1_v0
 {
@@ -312,6 +313,9 @@ bool8 UpdateSave_v0_v1(const struct SaveSectorLocation *locations)
      * that the player healed, so the player will appear in the same spot they would
      * as if they blacked out. */
     SetContinueGameWarpStatus();
+    //make conditional: how do I check the tm pocket?
+    if (HasAtLeastOneTM())
+        AddBagItem(ITEM_TM_CASE, 1);
     gSaveBlock1Ptr->continueGameWarp = gSaveBlock1Ptr->lastHealLocation;
     
     return 1;

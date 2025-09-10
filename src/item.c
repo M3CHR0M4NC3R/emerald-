@@ -177,6 +177,22 @@ bool8 HasAtLeastOneBerry(void)
     return FALSE;
 }
 
+bool8 HasAtLeastOneTM(void)
+{
+    u16 i;
+
+    for (i = ITEM_TM01; i < ITEM_LAST_TMHM; i++)
+    {
+        if (CheckBagHasItem(i, 1) == TRUE)
+        {
+            gSpecialVar_Result = TRUE;
+            return TRUE;
+        }
+    }
+    gSpecialVar_Result = FALSE;
+    return FALSE;
+}
+
 bool8 CheckBagHasSpace(u16 itemId, u16 count)
 {
     u8 i;

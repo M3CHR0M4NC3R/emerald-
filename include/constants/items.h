@@ -380,6 +380,7 @@
 #define ITEM_HM06 344
 #define ITEM_HM07 345
 #define ITEM_HM08 346
+#define ITEM_LAST_TMHM ITEM_HM08
 
 // Unknown
 #define ITEM_15B 347
